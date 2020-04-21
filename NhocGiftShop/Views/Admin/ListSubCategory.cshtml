@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "ListSubCategory";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<form action="" method="POST">
+    <div class="table-agile-info">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                SubCategory List &nbsp; <a class="agile-icon" href="@Url.Action("SubCategory")"><i class="fa fa-plus-circle"></i></a>
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped b-t b-light">
+                    <thead>
+                        <tr>
+                            <th>SubCategory Name</th>
+                            <th>Category Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody style="word-break: break-all;">
+                        @foreach (var item in NhocGiftShop.Models.Repositories.GetAllSubCate())
+                        {
+                            <tr>
+                                <td>@item.nameSC</td>
+                                <td>@item.nameCate</td>
+                                <td>
+                                    <a href="@Url.Action("EditSubCategory", new { idSC=item.idSC})" class="active" ui-toggle-class="">
+                                        <i class="fa fa-edit text-success text-active"></i>&nbsp; &nbsp;
+                                    </a>
+                                    <a href="@Url.Action("DelSubCate", new { idSC=item.idSC})" class="active" ui-toggle-class="">
+                                        <i class="fa fa-trash text-danger text"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+@if (TempData["rs"] != null)
+{
+    <script>
+        $(function () {
+            $("#msgModal").modal("show");
+        });
+    </script>
+    <div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="margin:auto;width:60%;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="msgModalLabel" style="width:50%; font-size:20px">Notification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -29px;font-size: 30px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color: coral;font-size:18px;">
+                    @if (((int)TempData["rs"]) == 1)
+                    {
+                        <label>Delete successful!</label>
+                    }
+                    @if (((int)TempData["rs"]) == 0)
+                    {
+                        <label>Delete failed! This subcategory contains many other products.</label>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

@@ -1,0 +1,87 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    NhocGiftShop.Models.ViewModel.ProductView pro = null;
+    if (TempData["p"] != null)
+    {
+        pro = (NhocGiftShop.Models.ViewModel.ProductView)TempData["p"];
+    }
+}
+@if (pro != null)
+{
+    <a href="@Url.Action("ListProduct")" class="btn btn-sm btn-info" style="background-color:#4e73df;font-size:20px;float:right;">
+        <i class="fa fa-arrow-right"></i>
+    </a>
+
+    <section class="panel" style="margin-top:55px;">
+        <header class="panel-heading">
+            Edit Product
+        </header>
+        <form action="@Url.Action("UpdatePro")" method="POST" enctype="multipart/form-data">
+            <div class="panel-body">
+                <div class="position-center">
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="hidden" name="idPro" value="@pro.idPro" />
+                            <label for="">Product Name:</label>
+                            <input type="text" class="form-control" name="namePro" maxlength="70" value="@pro.namePro" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nameSC">Category:</label>
+                            <select name="idSC" id="nameSC" class="form-control input-sm m-bot15" style="width: 50%">
+                                <option value="@pro.idSC">@pro.nameSC</option>
+                                @foreach (var item in NhocGiftShop.Models.Repositories.EditCbbSubCate(pro.idSC))
+                                {
+                                    <option value="@item.idSC">@item.nameSC</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Material:</label>
+                            <input type="text" class="form-control" name="material" maxlength="100" value="@pro.material">
+                        </div>
+                        <div style="margin-bottom:10px;">
+                            <label>Description:</label>
+                            <textarea name="description" id="Description">@pro.description</textarea>
+                            <script>CKEDITOR.replace("Description")</script>
+                        </div>
+                        <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                    </form>
+                </div>
+
+            </div>
+        </form>
+    </section>
+}
+
+@if (TempData["rs"] != null)
+{
+    <script>
+        $(function () {
+            $("#msgModal").modal("show");
+        });
+    </script>
+    <div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="margin:auto;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="msgModalLabel" style="width:50%; font-size:20px">Notification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -29px;font-size: 30px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color: coral;font-size:18px;">
+                    @if (((int)TempData["rs"]) == 0)
+                    {
+                        <label>This name already exists!</label>
+                    }
+                    @if (((int)TempData["rs"]) == 2)
+                    {
+                        <label>The name cannot only contain whitespace!</label>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

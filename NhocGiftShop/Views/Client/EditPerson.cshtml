@@ -1,0 +1,75 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    NhocGiftShop.Models.EntitiesModel.InformationPerson person = null;
+    if (TempData["person"] != null)
+    {
+        person = (NhocGiftShop.Models.EntitiesModel.InformationPerson)TempData["person"];
+    }
+}
+@if (person != null)
+{
+    <div style="min-height: 475px;">
+        <p style="text-transform: uppercase;padding: 25px;font-size: 25px;text-align: center;">
+            Chỉnh sửa tài khoản của bạn
+        </p>
+        <div>
+            <img src="@Url.Content("~/Content/Client/")image/border.png" alt="" style="width: 100%;margin-top: -8px;">
+        </div>
+        <form action="@Url.Action("UpdatePerson")" method="post" id="frmSignUp">
+            <div id="inputValue">
+                <div id="colValue1" style="margin-top: 18px;">
+                    <div id="email">
+                        <label for=""><span><b style="color: red;">* </b>Email</span></label>
+                        <input maxlength="50" name="email" id="valueEmail" type="email" pattern="[a-z0-9._%+-]+@("@")[a-z0-9.-]+\.[a-z]{2,}$"
+                               onfocusout="displayErrorEmail('valueEmail','warningEmail')" required value="@person.email">
+                        <div class="help-block error" id="warningEmail">Bạn không thể để trống Email!</div>
+                    </div>
+                    <div id="address">
+                        <label for=""><span style="margin-left: 12px;">Địa chỉ</span></label>
+                        <input maxlength="200" name="address" type="text" value="@person.address">
+                    </div>
+                </div>
+                <div id="colValue2">
+                    <div id="usrname">
+                        <label for="" style="width: 50%;">
+                            <span><b style="color: red;">* </b>Họ và tên</span>
+                            <select name="gender">
+                                @if (person.gender == false)
+                                {
+                                    <option value="False">Nam</option>
+                                    <option value="True">Nữ</option>
+                                }
+                                else
+                                {
+                                    <option value="True">Nữ</option>
+                                    <option value="False">Nam</option>
+                                }
+
+                            </select>
+                        </label>
+                        <input maxlength="50" name="nameIP" id="valueUsr" type="text" style="width: 38%;" onfocusout="displayErrorEmail('valueUsr','warningUsr')" required value="@person.nameIP">
+                        <div class="help-block error" id="warningUsr">Bạn cần điền tên đăng nhập!</div>
+                    </div>
+                    <div id="phonenumber">
+                        <label for="" style="width: 26%;">
+                            <span><b style="color: red;">* </b>Điện thoại</span>
+                        </label>
+                        <input maxlength="11" name="phone" id="valuePhone" type="text" style="width: 62%;" onfocusout="displayErrorEmail('valuePhone','warningPhone')" pattern="^([\d]{10,11})$" required value="@person.phone">
+                        <div class="help-block error" id="warningPhone">Bạn không thể để trống điện thoại!</div>
+                    </div>
+                    <div id="dob">
+                        <label for="" style="width: 26%;">
+                            <span><b style="color: red;">* </b>Ngày sinh</span>
+                        </label>
+                        <input name="DOB" type="date" style="width: 62%;" required value="@person.DOB">
+                    </div>
+                </div>
+            </div>
+            <div id="submitValue">
+                <input type="submit" name="" id="btnSignUp" value="Cập nhật" />
+            </div>
+        </form>
+    </div>
+}
+

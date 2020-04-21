@@ -1,0 +1,52 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    NhocGiftShop.Models.ViewModel.OrderProView op = null;
+    if (TempData["op"] != null)
+    {
+        op = (NhocGiftShop.Models.ViewModel.OrderProView)TempData["op"];
+    }
+}
+@if (op != null)
+{
+    <form action="" method="POST">
+        <div class="table-agile-info">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Order Detail List : @op.nameIP
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped b-t b-light">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Size</th>
+                                <th>Color</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody style="word-break: break-all;">
+                            @foreach (var item in NhocGiftShop.Models.Repositories.GetOD(op.idOP))
+                            {
+                                <tr>
+                                    <td>@item.namePro</td>
+                                    <td>@item.size</td>
+                                    <td>@item.colorName</td>
+                                    <td>@item.quantity</td>
+                                    <td>@item.priceOD</td>
+                                    <td>@item.amount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+

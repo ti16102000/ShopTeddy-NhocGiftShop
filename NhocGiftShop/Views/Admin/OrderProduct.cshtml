@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "OrderProduct";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<form action="" method="POST">
+    <div class="table-agile-info">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Order Product List
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped b-t b-light">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody style="word-break: break-all;">
+                        @foreach (var item in NhocGiftShop.Models.Repositories.GetOP())
+                        {
+                            <tr>
+                                <td>@item.nameIP</td>
+                                <td>@item.total</td>
+                                <td>
+                                    <a href="@Url.Action("OrdDetail",new { idOP=item.idOP})" class="active" ui-toggle-class="">
+                                        <i class="fa fa-info-circle text-success text-active"></i>&nbsp; &nbsp;
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+

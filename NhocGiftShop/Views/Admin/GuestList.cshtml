@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "GuestList";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<form action="" method="POST">
+    <div class="table-agile-info">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Member List
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped b-t b-light">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Gender</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>DOB</th>
+                            <th>Sign Up?</th>
+                        </tr>
+                    </thead>
+                    <tbody style="word-break: break-all;">
+                        @foreach (var item in NhocGiftShop.Models.Repositories.GetGuest())
+                        {
+                            <tr>
+                                <td>@item.nameIP</td>
+                                <td>@item.email</td>
+                                <td>@(item.gender == null ? null:item.gender==true?"Nữ":"Name")</td>
+                                <td>@item.address</td>
+                                <td>@item.phone</td>
+                                <td>@item.DOB</td>
+                                <td>@NhocGiftShop.Models.Repositories.CheckSignUp(item.phone)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+

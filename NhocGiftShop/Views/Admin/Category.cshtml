@@ -1,0 +1,71 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<a href="@Url.Action("ListCategory")" class="btn btn-sm btn-info" style="background-color:#4e73df;font-size:20px;float:right;">
+    <i class="fa fa-arrow-right"></i>
+</a>
+
+<section class="panel" style="margin-top:55px;">
+    <header class="panel-heading">
+        Create Category
+    </header>
+    <form action="@Url.Action("CreateCate")" method="POST" enctype="multipart/form-data">
+        <div class="panel-body">
+            <div class="position-center">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="">Category Name:</label>
+                        <input type="text" class="form-control" name="nameCate" maxlength="70" required>
+                    </div>
+                    <div style="margin-bottom:10px;">
+                        <label for="cbActive" style="margin-right:10px;">Special:</label>
+                        <input type="checkbox" id="cbActive" style="width:20px;height:20px;" />
+                        <input type="hidden" name="specialCate" id="cbActiveValue" value="False" />
+                    </div>
+                    <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                </form>
+            </div>
+
+        </div>
+    </form>
+</section>
+@if (TempData["rs"] != null)
+{
+    <script>
+        $(function () {
+            $("#msgModal").modal("show");
+        });
+    </script>
+    <div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="margin:auto;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="msgModalLabel" style="width:50%; font-size:20px">Notification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -29px;font-size: 30px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color: coral;font-size:18px;">
+                    @if (((int)TempData["rs"]) == 0)
+                    {
+                        <label>This name already exists!</label>
+                    }
+                    @if (((int)TempData["rs"]) == 2)
+                    {
+                        <label>The name cannot only contain whitespace!</label>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+    <script>
+        $("#cbActive").change(function () {
+            $("#cbActive").is(":checked") ? $("#cbActiveValue").val("True") : $("#cbActiveValue").val("False");
+        })
+    </script>
+}
+

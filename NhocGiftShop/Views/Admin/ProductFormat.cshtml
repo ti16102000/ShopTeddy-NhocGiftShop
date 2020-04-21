@@ -1,0 +1,53 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    NhocGiftShop.Models.ViewModel.ProductView pro = null;
+    if (TempData["p"] != null)
+    {
+        pro = (NhocGiftShop.Models.ViewModel.ProductView)TempData["p"];
+    }
+}
+@if (pro != null)
+{
+    <a href="@Url.Action("ListPF", new { idPro=pro.idPro})" class="btn btn-sm btn-info" style="background-color:#4e73df;font-size:20px;float:right;">
+        <i class="fa fa-arrow-right"></i>
+    </a>
+    <section class="panel" style="margin-top:55px;">
+        <header class="panel-heading">
+           Create Format Product
+        </header>
+        <form action="@Url.Action("CreatePF")" method="POST" enctype="multipart/form-data">
+            <div class="panel-body">
+                <div class="position-center">
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="hidden" name="idPro" value="@pro.idPro" />
+                            <label for="">&nbsp; &nbsp;Product Name: @pro.namePro</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Price:</label>
+                            <input type="number" class="form-control" name="price" value="" maxlength="10" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="">Size:</label>
+                            <input type="text" class="form-control" name="size" value="" maxlength="20" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="">Display Color:</label>
+                            <input type="text" class="form-control" name="colorCSS" value="" maxlength="20" required />
+                            <a href="https://hocwebchuan.com/reference/cssSection/css_color.php" target="_blank">Select color online and copy code color</a>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Color Name:</label>
+                            <input type="text" class="form-control" name="colorName" maxlength="40" value="" required>
+                        </div>
+                        <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </form>
+    </section>
+}
+
+
+

@@ -1,0 +1,101 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    NhocGiftShop.Models.ViewModel.InfoPersonView person = null;
+    if (TempData["person"] != null)
+    {
+        person = (NhocGiftShop.Models.ViewModel.InfoPersonView)TempData["person"];
+    }
+}
+
+@if (person != null)
+{
+    <div style="min-height: 500px;">
+        <p style="text-transform: uppercase;padding: 25px;font-size: 30px;text-align: center;">
+            Thông tin cá nhân
+            của bạn
+        </p>
+        <div>
+            <img src="@Url.Content("~/Content/Client/")image/border.png" alt="" style="width: 100%;margin-top: -8px;">
+        </div>
+        <div id="infoPerson">
+            <div id="menuInfo">
+                <div id="btnInfo" style="color: darkblue;">Thông tin cá nhân</div>
+                <div id="btnHistoryOrd">Lịch sử mua hàng</div>
+                <div id="btnChangePwd">Đổi mật khẩu</div>
+            </div>
+            <div id="detailInfo">
+                <div id="contentInfo" style="display: block;">
+                    <div id="gridInfo">
+                        <div id="colInfo1">
+                            <span>Họ và tên:</span>
+                            <span>Ngày sinh:</span>
+                            <span>Giới tính:</span>
+                            <span>Địa chỉ:</span>
+                            <span>Số điện thoại:</span>
+                            <span>Email:</span>
+                        </div>
+                        <div id="colInfo2">
+                            <span>@person.nameIP</span>
+                            <span>@person.DOB</span>
+                            <span>@(person.gender == true ? "Nữ" : "Nam")</span>
+                            <span>@(person.address ?? "Chưa cập nhật")</span>
+                            <span>@person.phone</span>
+                            <span>@person.email</span>
+                        </div>
+
+                    </div>
+                    <a href="@Url.Action("EditPerson")" id="btnEditInfo">Chỉnh sửa</a>
+                </div>
+                <div id="contentOrd" style="display: none;">
+                    @if (TempData["op"] == null)
+                    {
+                        <span>Bạn chưa mua sản phẩm nào của Nhóc Gift Shop!</span>
+                    }
+                    else
+                    {
+                        foreach (var op in ((List<NhocGiftShop.Models.EntitiesModel.OrderProduct>)TempData["op"]))
+                        {
+                        <div id="detailContentOrd">
+                            @foreach (var item in NhocGiftShop.Models.Repositories.GetOD(op.idOP))
+                            {
+                            <div>@item.namePro - @(item.colorName ?? null) @(item.size ?? null) (x @item.quantity) - @item.amount Đ</div>
+                            }
+                            <div>Tổng tiền: @op.total Đ</div>
+                        </div>
+                        }
+                    }
+
+                </div>
+                <div id="changePwd" style="display:none;">
+                    <form action="@Url.Action("ChangePwd")" method="post">
+                        <div id="oldPwd">
+                            <label for=""><span>Mật khẩu cũ:</span></label>
+                            <input maxlength="20" name="pwdOld" type="password" id="valueOldPwd"
+                                   onfocusout="displayErrorEmail('valueOldPwd','warningOldPwd')" required>
+                            <div class="help-block error" id="warningOldPwd">Bạn không thể để trống Mật khẩu cũ!</div>
+                        </div>
+                        <div id="password">
+                            <label for=""><span>Mật khẩu mới:</span></label>
+                            <input maxlength="20" name="pwdNew" type="password" id="valuePwd"
+                                   onfocusout="displayErrorEmail('valuePwd','warningPwd')" required pattern=".{6,}" title="Six or more characters">
+                            <div class="help-block error" id="warningPwd">Bạn không thể để trống Mật khẩu mới!</div>
+                        </div>
+                        <div id="repass">
+                            <label for=""><span>Nhập lại mật khẩu:</span></label>
+                            <input maxlength="20" name="" id="valueRepass" type="password"
+                                   onfocusout="errorRepass()" required>
+                            <div class="help-block error" id="warningRepass">Bạn cần nhập lại đúng mật khẩu!</div>
+                        </div>
+                        <div id="submitValue" style="margin-top: 40px;margin-left: 10%;">
+                            <input type="submit" id="btnSignUp" name="btnPwd" value="Cập nhật">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+

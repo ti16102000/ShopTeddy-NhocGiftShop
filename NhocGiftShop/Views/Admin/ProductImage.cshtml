@@ -1,0 +1,81 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    NhocGiftShop.Models.ViewModel.ProductView pro = null;
+    if (TempData["p"] != null)
+    {
+        pro = (NhocGiftShop.Models.ViewModel.ProductView)TempData["p"];
+    }
+}
+
+@if (pro != null)
+{
+    <a href="@Url.Action("ListPI", new { idPro = pro.idPro })" class="btn btn-sm btn-info" style="background-color:#4e73df;font-size:20px;float:right;">
+        <i class="fa fa-arrow-right"></i>
+    </a>
+    <section class="panel" style="margin-top:55px;">
+        <header class="panel-heading">
+            Create Image Product
+        </header>
+        <form action="@Url.Action("CreatePI", new { idPro=pro.idPro})" method="POST" enctype="multipart/form-data">
+            <div class="panel-body">
+                <div class="position-center">
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="hidden" name="idPro" value="@pro.idPro" />
+                            <label for="">Product Name: @pro.namePro</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Image:</label>
+                            <input type="file" name="imgPro" value="" accept="image/*" />
+                        </div>
+                        @if (NhocGiftShop.Models.Repositories.GetImgMainByIDPro(pro.idPro) == null)
+                        {
+                            <div style="margin-bottom:10px;">
+                                <label for="cbActive" style="margin-right:10px;">Image Main:</label>
+                                <input type="checkbox" id="cbActive" style="width:20px;height:20px;" />
+                                <input type="hidden" name="imgMain" id="cbActiveValue" value="False" />
+                            </div>
+                        }
+                        <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </form>
+    </section>
+}
+@if (TempData["rs"] != null)
+{
+    <script>
+        $(function () {
+            $("#msgModal").modal("show");
+        });
+    </script>
+    <div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="margin:auto;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="msgModalLabel" style="width:50%; font-size:20px">Notification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -29px;font-size: 30px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color: coral;font-size:18px;">
+                    @if (((int)TempData["rs"]) == 0)
+                    {
+                        <label>Create Failed! The Image has not been added</label>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+    <script>
+        $("#cbActive").change(function () {
+            $("#cbActive").is(":checked") ? $("#cbActiveValue").val("True") : $("#cbActiveValue").val("False");
+        })
+    </script>
+}
+

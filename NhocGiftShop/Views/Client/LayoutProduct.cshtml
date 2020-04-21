@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    NhocGiftShop.Models.ViewModel.SubCategoryView sc = null;
+    if (TempData["sc"] != null)
+    {
+        sc = (NhocGiftShop.Models.ViewModel.SubCategoryView)TempData["sc"];
+    }
+}
+@if (sc != null)
+{
+    <div style="min-height: 500px;">
+        <p class="cateName">@sc.nameSC</p>
+        <div id="proList">
+            @foreach (var item in NhocGiftShop.Models.Repositories.GetProductByIDSC(sc.idSC))
+            {
+                <div class="proItem">
+                    <div class="proBlock">
+
+                        <div class="proImg">
+
+                            <a href="@Url.Action("LayoutProductDetail",new { idPro=item.idPro})">
+                                <img src="@Url.Content("~/Content/Images/")@NhocGiftShop.Models.Repositories.GetImgMainByIDPro(item.idPro)" alt="">
+                            </a>
+                        </div>
+                        <div class="proName">
+                            <p>
+                                <a class="nameBlockText" href="@Url.Action("LayoutProductDetail",new { idPro=item.idPro})">@item.namePro</a>
+                            </p>
+                        </div>
+                        <div class="proPrice">
+                            <p style="color: #DE6591;font-weight: bold;font-size:18px">
+                                <i style="font-size: 10px" class="fa fa-heart"></i>
+                                @NhocGiftShop.Models.Repositories.GetPriceDisplay(item.idPro) vnđ
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

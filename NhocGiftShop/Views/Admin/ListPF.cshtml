@@ -1,0 +1,93 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    NhocGiftShop.Models.ViewModel.ProductView pro = null;
+    if (TempData["p"] != null)
+    {
+        pro = (NhocGiftShop.Models.ViewModel.ProductView)TempData["p"];
+    }
+}
+
+@if (pro != null)
+{
+    <a href="@Url.Action("ListProduct")" class="btn btn-sm btn-info" style="background-color:#4e73df;font-size:20px;float:right;">
+        <i class="fa fa-arrow-right"></i>
+    </a>
+    <section class="panel" style="margin-top:55px;">
+        <form action="" method="POST">
+            <div class="table-agile-info">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Product Format List &nbsp; <a class="agile-icon" href="@Url.Action("ProductFormat",new { idPro=pro.idPro})"><i class="fa fa-plus-circle"></i></a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <label>&nbsp;&nbsp;Product Name: @pro.namePro</label>
+                        <table class="table table-striped b-t b-light">
+                            <thead>
+                                <tr>
+                                    <th>Size</th>
+                                    <th>Price</th>
+                                    <th>Display Color</th>
+                                    <th>Color Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody style="word-break: break-all;">
+                                @foreach (var item in NhocGiftShop.Models.Repositories.GetPF(pro.idPro))
+                                {
+                                    <tr>
+                                        <td>@item.size</td>
+                                        <td>@item.price</td>
+                                        <td>@(item.colorCSS??null)</td>
+                                        <td>@(item.colorName??null)</td>
+                                        <td>
+                                            <a href="@Url.Action("EditPF", new { idPF=item.idPF})" class="active" ui-toggle-class="">
+                                                <i class="fa fa-edit text-success text-active"></i>&nbsp; &nbsp;
+                                            </a>
+                                            <a href="@Url.Action("DelPF",new { idPF=item.idPF,idProduct=item.idPro})" class="active" ui-toggle-class="">
+                                                <i class="fa fa-trash text-danger text"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+
+}
+@if (TempData["rs"] != null)
+{
+    <script>
+        $(function () {
+            $("#msgModal").modal("show");
+        });
+    </script>
+    <div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="margin:auto;width:60%;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="msgModalLabel" style="width:50%; font-size:20px">Notification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -29px;font-size: 30px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color: coral;font-size:18px;">
+                    @if (((int)TempData["rs"]) == 1)
+                    {
+                        <label>Delete successful!</label>
+                    }
+                    @if (((int)TempData["rs"]) == 0)
+                    {
+                        <label>Delete failed!</label>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

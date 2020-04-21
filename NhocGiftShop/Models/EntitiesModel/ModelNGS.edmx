@@ -1,0 +1,602 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="NhocGiftShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="idCate" />
+          </Key>
+          <Property Name="idCate" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nameCate" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="specialCate" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InformationPerson">
+          <Key>
+            <PropertyRef Name="idIP" />
+          </Key>
+          <Property Name="idIP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nameIP" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="pwd" Type="nvarchar" MaxLength="20" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+          <Property Name="gender" Type="bit" />
+          <Property Name="address" Type="nvarchar" MaxLength="500" />
+          <Property Name="phone" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="DOB" Type="date" />
+          <Property Name="idR" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="idOD" />
+          </Key>
+          <Property Name="idOD" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idOP" Type="int" Nullable="false" />
+          <Property Name="idPF" Type="int" Nullable="false" />
+          <Property Name="priceOD" Type="int" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+          <Property Name="amount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderProduct">
+          <Key>
+            <PropertyRef Name="idOP" />
+          </Key>
+          <Property Name="idOP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idIP" Type="int" Nullable="false" />
+          <Property Name="total" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="idPro" />
+          </Key>
+          <Property Name="idPro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="namePro" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="material" Type="nvarchar" MaxLength="100" />
+          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="idSC" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductFormat">
+          <Key>
+            <PropertyRef Name="idPF" />
+          </Key>
+          <Property Name="idPF" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idPro" Type="int" Nullable="false" />
+          <Property Name="size" Type="varchar" MaxLength="10" />
+          <Property Name="price" Type="int" />
+          <Property Name="colorCSS" Type="varchar" MaxLength="20" />
+          <Property Name="colorName" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="ProductImages">
+          <Key>
+            <PropertyRef Name="idPI" />
+          </Key>
+          <Property Name="idPI" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idPro" Type="int" Nullable="false" />
+          <Property Name="imgPro" Type="nvarchar(max)" />
+          <Property Name="imgMain" Type="bit" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="idR" />
+          </Key>
+          <Property Name="idR" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nameR" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SubCategory">
+          <Key>
+            <PropertyRef Name="idSC" />
+          </Key>
+          <Property Name="idSC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nameSC" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="idCate" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_InformationPerson_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="InformationPerson" Type="Self.InformationPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="idR" />
+            </Principal>
+            <Dependent Role="InformationPerson">
+              <PropertyRef Name="idR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_OrderProduct">
+          <End Role="OrderProduct" Type="Self.OrderProduct" Multiplicity="1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderProduct">
+              <PropertyRef Name="idOP" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="idOP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_ProductFormat">
+          <End Role="ProductFormat" Type="Self.ProductFormat" Multiplicity="1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductFormat">
+              <PropertyRef Name="idPF" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="idPF" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderProduct_InformationPerson">
+          <End Role="InformationPerson" Type="Self.InformationPerson" Multiplicity="1" />
+          <End Role="OrderProduct" Type="Self.OrderProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InformationPerson">
+              <PropertyRef Name="idIP" />
+            </Principal>
+            <Dependent Role="OrderProduct">
+              <PropertyRef Name="idIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_SubCategory">
+          <End Role="SubCategory" Type="Self.SubCategory" Multiplicity="1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubCategory">
+              <PropertyRef Name="idSC" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="idSC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductFormat_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProductFormat" Type="Self.ProductFormat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="idPro" />
+            </Principal>
+            <Dependent Role="ProductFormat">
+              <PropertyRef Name="idPro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductImages_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ProductImages" Type="Self.ProductImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="idPro" />
+            </Principal>
+            <Dependent Role="ProductImages">
+              <PropertyRef Name="idPro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubCategory_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="SubCategory" Type="Self.SubCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="idCate" />
+            </Principal>
+            <Dependent Role="SubCategory">
+              <PropertyRef Name="idCate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NhocGiftShopModelStoreContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InformationPerson" EntityType="Self.InformationPerson" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderProduct" EntityType="Self.OrderProduct" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductFormat" EntityType="Self.ProductFormat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductImages" EntityType="Self.ProductImages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubCategory" EntityType="Self.SubCategory" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_InformationPerson_Role" Association="Self.FK_InformationPerson_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="InformationPerson" EntitySet="InformationPerson" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_OrderProduct" Association="Self.FK_OrderDetail_OrderProduct">
+            <End Role="OrderProduct" EntitySet="OrderProduct" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_ProductFormat" Association="Self.FK_OrderDetail_ProductFormat">
+            <End Role="ProductFormat" EntitySet="ProductFormat" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderProduct_InformationPerson" Association="Self.FK_OrderProduct_InformationPerson">
+            <End Role="InformationPerson" EntitySet="InformationPerson" />
+            <End Role="OrderProduct" EntitySet="OrderProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_SubCategory" Association="Self.FK_Product_SubCategory">
+            <End Role="SubCategory" EntitySet="SubCategory" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductFormat_Product" Association="Self.FK_ProductFormat_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductFormat" EntitySet="ProductFormat" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductImages_Product" Association="Self.FK_ProductImages_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductImages" EntitySet="ProductImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubCategory_Category" Association="Self.FK_SubCategory_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="SubCategory" EntitySet="SubCategory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NhocGiftShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="NhocGiftShopEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="NhocGiftShopModel.Category" />
+          <EntitySet Name="OrderDetails" EntityType="NhocGiftShopModel.OrderDetail" />
+          <EntitySet Name="OrderProducts" EntityType="NhocGiftShopModel.OrderProduct" />
+          <EntitySet Name="Products" EntityType="NhocGiftShopModel.Product" />
+          <EntitySet Name="ProductFormats" EntityType="NhocGiftShopModel.ProductFormat" />
+          <EntitySet Name="ProductImages" EntityType="NhocGiftShopModel.ProductImage" />
+          <EntitySet Name="Roles" EntityType="NhocGiftShopModel.Role" />
+          <EntitySet Name="SubCategories" EntityType="NhocGiftShopModel.SubCategory" />
+          <AssociationSet Name="FK_SubCategory_Category" Association="NhocGiftShopModel.FK_SubCategory_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="SubCategory" EntitySet="SubCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_OrderProduct" Association="NhocGiftShopModel.FK_OrderDetail_OrderProduct">
+            <End Role="OrderProduct" EntitySet="OrderProducts" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_ProductFormat" Association="NhocGiftShopModel.FK_OrderDetail_ProductFormat">
+            <End Role="ProductFormat" EntitySet="ProductFormats" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_SubCategory" Association="NhocGiftShopModel.FK_Product_SubCategory">
+            <End Role="SubCategory" EntitySet="SubCategories" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductFormat_Product" Association="NhocGiftShopModel.FK_ProductFormat_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductFormat" EntitySet="ProductFormats" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductImages_Product" Association="NhocGiftShopModel.FK_ProductImages_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductImage" EntitySet="ProductImages" />
+          </AssociationSet>
+          <EntitySet Name="InformationPersons" EntityType="NhocGiftShopModel.InformationPerson" />
+          <AssociationSet Name="FK_InformationPerson_Role" Association="NhocGiftShopModel.FK_InformationPerson_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="InformationPerson" EntitySet="InformationPersons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderProduct_InformationPerson" Association="NhocGiftShopModel.FK_OrderProduct_InformationPerson">
+            <End Role="InformationPerson" EntitySet="InformationPersons" />
+            <End Role="OrderProduct" EntitySet="OrderProducts" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="idCate" />
+          </Key>
+          <Property Name="idCate" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nameCate" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="specialCate" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SubCategories" Relationship="NhocGiftShopModel.FK_SubCategory_Category" FromRole="Category" ToRole="SubCategory" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="idOD" />
+          </Key>
+          <Property Name="idOD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idOP" Type="Int32" Nullable="false" />
+          <Property Name="idPF" Type="Int32" Nullable="false" />
+          <Property Name="priceOD" Type="Int32" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="amount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OrderProduct" Relationship="NhocGiftShopModel.FK_OrderDetail_OrderProduct" FromRole="OrderDetail" ToRole="OrderProduct" />
+          <NavigationProperty Name="ProductFormat" Relationship="NhocGiftShopModel.FK_OrderDetail_ProductFormat" FromRole="OrderDetail" ToRole="ProductFormat" />
+        </EntityType>
+        <EntityType Name="OrderProduct">
+          <Key>
+            <PropertyRef Name="idOP" />
+          </Key>
+          <Property Name="idOP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idIP" Type="Int32" Nullable="false" />
+          <Property Name="total" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OrderDetails" Relationship="NhocGiftShopModel.FK_OrderDetail_OrderProduct" FromRole="OrderProduct" ToRole="OrderDetail" />
+          <NavigationProperty Name="InformationPerson" Relationship="NhocGiftShopModel.FK_OrderProduct_InformationPerson" FromRole="OrderProduct" ToRole="InformationPerson" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="idPro" />
+          </Key>
+          <Property Name="idPro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="namePro" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="material" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="idSC" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SubCategory" Relationship="NhocGiftShopModel.FK_Product_SubCategory" FromRole="Product" ToRole="SubCategory" />
+          <NavigationProperty Name="ProductFormats" Relationship="NhocGiftShopModel.FK_ProductFormat_Product" FromRole="Product" ToRole="ProductFormat" />
+          <NavigationProperty Name="ProductImages" Relationship="NhocGiftShopModel.FK_ProductImages_Product" FromRole="Product" ToRole="ProductImage" />
+        </EntityType>
+        <EntityType Name="ProductFormat">
+          <Key>
+            <PropertyRef Name="idPF" />
+          </Key>
+          <Property Name="idPF" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idPro" Type="Int32" Nullable="false" />
+          <Property Name="size" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="price" Type="Int32" />
+          <NavigationProperty Name="OrderDetails" Relationship="NhocGiftShopModel.FK_OrderDetail_ProductFormat" FromRole="ProductFormat" ToRole="OrderDetail" />
+          <NavigationProperty Name="Product" Relationship="NhocGiftShopModel.FK_ProductFormat_Product" FromRole="ProductFormat" ToRole="Product" />
+          <Property Name="colorCSS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="colorName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ProductImage">
+          <Key>
+            <PropertyRef Name="idPI" />
+          </Key>
+          <Property Name="idPI" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idPro" Type="Int32" Nullable="false" />
+          <Property Name="imgPro" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="imgMain" Type="Boolean" />
+          <NavigationProperty Name="Product" Relationship="NhocGiftShopModel.FK_ProductImages_Product" FromRole="ProductImage" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="idR" />
+          </Key>
+          <Property Name="idR" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nameR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="InformationPersons" Relationship="NhocGiftShopModel.FK_InformationPerson_Role" FromRole="Role" ToRole="InformationPerson" />
+        </EntityType>
+        <EntityType Name="SubCategory">
+          <Key>
+            <PropertyRef Name="idSC" />
+          </Key>
+          <Property Name="idSC" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nameSC" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="idCate" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="NhocGiftShopModel.FK_SubCategory_Category" FromRole="SubCategory" ToRole="Category" />
+          <NavigationProperty Name="Products" Relationship="NhocGiftShopModel.FK_Product_SubCategory" FromRole="SubCategory" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_SubCategory_Category">
+          <End Type="NhocGiftShopModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="NhocGiftShopModel.SubCategory" Role="SubCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="idCate" />
+            </Principal>
+            <Dependent Role="SubCategory">
+              <PropertyRef Name="idCate" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_OrderProduct">
+          <End Type="NhocGiftShopModel.OrderProduct" Role="OrderProduct" Multiplicity="1" />
+          <End Type="NhocGiftShopModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderProduct">
+              <PropertyRef Name="idOP" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="idOP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_ProductFormat">
+          <End Type="NhocGiftShopModel.ProductFormat" Role="ProductFormat" Multiplicity="1" />
+          <End Type="NhocGiftShopModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductFormat">
+              <PropertyRef Name="idPF" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="idPF" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_SubCategory">
+          <End Type="NhocGiftShopModel.SubCategory" Role="SubCategory" Multiplicity="1" />
+          <End Type="NhocGiftShopModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubCategory">
+              <PropertyRef Name="idSC" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="idSC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductFormat_Product">
+          <End Type="NhocGiftShopModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="NhocGiftShopModel.ProductFormat" Role="ProductFormat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="idPro" />
+            </Principal>
+            <Dependent Role="ProductFormat">
+              <PropertyRef Name="idPro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductImages_Product">
+          <End Type="NhocGiftShopModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="NhocGiftShopModel.ProductImage" Role="ProductImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="idPro" />
+            </Principal>
+            <Dependent Role="ProductImage">
+              <PropertyRef Name="idPro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="InformationPerson">
+          <Key>
+            <PropertyRef Name="idIP" />
+          </Key>
+          <Property Name="idIP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nameIP" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="pwd" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="gender" Type="Boolean" />
+          <Property Name="address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DOB" Type="DateTime" Precision="0" />
+          <Property Name="idR" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="NhocGiftShopModel.FK_InformationPerson_Role" FromRole="InformationPerson" ToRole="Role" />
+          <NavigationProperty Name="OrderProducts" Relationship="NhocGiftShopModel.FK_OrderProduct_InformationPerson" FromRole="InformationPerson" ToRole="OrderProduct" />
+        </EntityType>
+        <Association Name="FK_InformationPerson_Role">
+          <End Type="NhocGiftShopModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="NhocGiftShopModel.InformationPerson" Role="InformationPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="idR" />
+            </Principal>
+            <Dependent Role="InformationPerson">
+              <PropertyRef Name="idR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderProduct_InformationPerson">
+          <End Type="NhocGiftShopModel.InformationPerson" Role="InformationPerson" Multiplicity="1" />
+          <End Type="NhocGiftShopModel.OrderProduct" Role="OrderProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InformationPerson">
+              <PropertyRef Name="idIP" />
+            </Principal>
+            <Dependent Role="OrderProduct">
+              <PropertyRef Name="idIP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NhocGiftShopModelStoreContainer" CdmEntityContainer="NhocGiftShopEntities">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="NhocGiftShopModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="specialCate" ColumnName="specialCate" />
+                <ScalarProperty Name="nameCate" ColumnName="nameCate" />
+                <ScalarProperty Name="idCate" ColumnName="idCate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="NhocGiftShopModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetail">
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="priceOD" ColumnName="priceOD" />
+                <ScalarProperty Name="idPF" ColumnName="idPF" />
+                <ScalarProperty Name="idOP" ColumnName="idOP" />
+                <ScalarProperty Name="idOD" ColumnName="idOD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderProducts">
+            <EntityTypeMapping TypeName="NhocGiftShopModel.OrderProduct">
+              <MappingFragment StoreEntitySet="OrderProduct">
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="idIP" ColumnName="idIP" />
+                <ScalarProperty Name="idOP" ColumnName="idOP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="NhocGiftShopModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="idSC" ColumnName="idSC" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="material" ColumnName="material" />
+                <ScalarProperty Name="namePro" ColumnName="namePro" />
+                <ScalarProperty Name="idPro" ColumnName="idPro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductFormats">
+            <EntityTypeMapping TypeName="NhocGiftShopModel.ProductFormat">
+              <MappingFragment StoreEntitySet="ProductFormat">
+                <ScalarProperty Name="colorName" ColumnName="colorName" />
+                <ScalarProperty Name="colorCSS" ColumnName="colorCSS" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="size" ColumnName="size" />
+                <ScalarProperty Name="idPro" ColumnName="idPro" />
+                <ScalarProperty Name="idPF" ColumnName="idPF" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductImages">
+            <EntityTypeMapping TypeName="NhocGiftShopModel.ProductImage">
+              <MappingFragment StoreEntitySet="ProductImages">
+                <ScalarProperty Name="imgMain" ColumnName="imgMain" />
+                <ScalarProperty Name="imgPro" ColumnName="imgPro" />
+                <ScalarProperty Name="idPro" ColumnName="idPro" />
+                <ScalarProperty Name="idPI" ColumnName="idPI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="NhocGiftShopModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="nameR" ColumnName="nameR" />
+                <ScalarProperty Name="idR" ColumnName="idR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubCategories">
+            <EntityTypeMapping TypeName="NhocGiftShopModel.SubCategory">
+              <MappingFragment StoreEntitySet="SubCategory">
+                <ScalarProperty Name="idCate" ColumnName="idCate" />
+                <ScalarProperty Name="nameSC" ColumnName="nameSC" />
+                <ScalarProperty Name="idSC" ColumnName="idSC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InformationPersons">
+            <EntityTypeMapping TypeName="NhocGiftShopModel.InformationPerson">
+              <MappingFragment StoreEntitySet="InformationPerson">
+                <ScalarProperty Name="idR" ColumnName="idR" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="pwd" ColumnName="pwd" />
+                <ScalarProperty Name="nameIP" ColumnName="nameIP" />
+                <ScalarProperty Name="idIP" ColumnName="idIP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

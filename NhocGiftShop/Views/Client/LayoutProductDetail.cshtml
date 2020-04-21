@@ -1,0 +1,166 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    NhocGiftShop.Models.EntitiesModel.Product pro = null;
+    if (TempData["pro"] != null)
+    {
+        pro = (NhocGiftShop.Models.EntitiesModel.Product)TempData["pro"];
+    }
+}
+@if (pro != null)
+{
+    <div style="min-height: 1000px;">
+        <div id="bgTitle">
+            <i class="fas fa-heart colorPink"></i>
+            <a href="">@pro.namePro</a>
+        </div>
+        <div id="proView">
+            <div id="colPro1">
+                <div id="imgBig">
+                    <img id="imgLarge" src="@Url.Content("~/Content/Images/")@ViewBag.ImgMain" alt="">
+                </div>
+                <div id="slideImg">
+                    <div id="owl-wrapper">
+                        @foreach (var item in NhocGiftShop.Models.Repositories.GetImagePro(pro.idPro))
+                        {
+                            <img class="imgItem" src="@Url.Content("~/Content/Images/")@item.imgPro">
+                        }
+                    </div>
+                    <div id="controlImg">
+                        <div id="btnPrev">
+                            <i class="fas fa-caret-left"></i>
+                        </div>
+                        <div id="btnNext">
+                            <i class="fas fa-caret-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="colPro2">
+                <div id="proViewName">
+                    <span>@pro.namePro</span>
+                </div>
+                <div id="proFormat">
+                    <form action="" method="post">
+                        <div id="gridPro">
+                            <div id="labelPro">
+                                <label for="">
+                                    <i class="fas fa-heart colorPink"></i>
+                                    Giá sản phẩm:
+                                </label>
+                                <label for="">
+                                    <i class="fas fa-heart colorPink"></i>
+                                    Màu sắc:
+                                </label>
+                                <label for="">
+                                    <i class="fas fa-heart colorPink"></i>
+                                    Kích thước:
+                                </label>
+                                <label for="">
+                                    <i class="fas fa-heart colorPink"></i>
+                                    Số lượng mua:
+                                </label>
+                            </div>
+                            <div id="valuePro" style="overflow:hidden;">
+
+                                <span id="fPrice" data-price="@ViewBag.PriceDisplay">@ViewBag.PriceDisplay vnđ</span>
+                                <div id="color" class="row">
+                                    @foreach (var item in (List<NhocGiftShop.Models.EntitiesModel.ProductFormat>)TempData["color"])
+                                    {
+                                        if (item.colorCSS == null)
+                                        {
+                                            <a rel="nofollow" data-idPro="@item.idPro" data-color="@item.colorCSS" data-colorName="@item.colorName" class="active" style="display:none">
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a rel="nofollow" href="#" data-idPro="@item.idPro" data-color="@item.colorCSS" data-colorName="@item.colorName">
+                                                <i class="fas fa-heart" style="font-size: 18px;margin-right:10px;color:@item.colorCSS" title="@item.colorName"></i>
+                                            </a>
+                                        }
+
+                                    }
+                                </div>
+
+                                <div id="size">
+                                    <p class="size req" column="i5">
+                                        @foreach (var item in (List<NhocGiftShop.Models.EntitiesModel.ProductFormat>)TempData["size"])
+                                        {
+                                            if (item.size == "Free size")
+                                            {
+                                                <a rel="nofollow" data-idPF="@item.idPF" data-size="@item.size" class="active" name="idPF" value="@item.idPF">@item.size</a>
+                                            }
+                                            else
+                                            {
+                                                <a rel="nofollow" data-idPF="@item.idPF" data-size="@item.size" class="" name="idPF" value="@item.idPF" title="Vui lòng chọn màu sắc!">@item.size</a>
+                                            }
+
+                                        }
+                                    </p>
+                                </div>
+                                <input type="number" class="entry number" id="quantity" name="quantity" min="1" value="1"
+                                       max="20" style="text-align: center;">
+                            </div>
+                        </div>
+                        <div class="cart_button">
+                            <div id="addToCart" class="giftheartButton" psid="6628750" selid="6628750" data-toggle="tooltip"
+                                 data-placement="top" data-status="0" title="Vui lòng chọn màu sắc hoặc kích cỡ!" ck="0">Mua ngay</div>
+
+                        </div>
+                    </form>
+                </div>
+                <div id="stores" style="margin-left: 10px;margin-top: 10px;">
+                    <span style="font-size: 18px;">
+                        <i class="fa fa-heart colorPink"></i>
+                        Còn tại cửa hàng :
+                    </span>
+                    <p><i style="color:green" class="fa fa-check"></i>107 Nguyễn Trãi, Phường 2, Quận 5</p>
+                    <p><i style="color:green" class="fa fa-check"></i>288 Đường 30-4 TP. Biên Hoà</p>
+                    <p>
+                        <i style="color:green" class="fa fa-check"></i>130 Nguyễn Việt Hồng, An Phú, Ninh Kiều,
+                        Cần Thơ
+                    </p>
+                    <p><i style="color:green" class="fa fa-check"></i>Nhóc Thủ Đức</p>
+                    <p><i style="color:green" class="fa fa-check"></i>159 Ba Cu, TP. Vũng Tàu</p>
+                </div>
+                <img src="@Url.Content("~/Content/Client/")image/Capture.PNG" alt="" style="width: 100%;margin-top: 10px;">
+            </div>
+        </div>
+        <div id="bgTitle">
+            <i class="fas fa-heart colorPink"></i>
+            <a href="">Chi tiết sản phẩm</a>
+        </div>
+        <div id="viewDetail">
+            <div id="detailPro">
+                <div style="margin-left: 15px;margin-top: 10px;" id="infoDetail">
+                    <strong id="dName">GẤU TEDDY NGỰC HOA HỒNG NƠ </strong>
+                    <ul style="margin-top: 20px;margin-left: 40px;">
+                        <li>Tên sản phẩm: @pro.namePro</li>
+
+                        <li>
+                            Kích thước:@foreach (var item in (List<NhocGiftShop.Models.EntitiesModel.ProductFormat>)TempData["size"])
+                            {
+                                <span>- @(item.size ?? "Chưa cập nhật")</span>
+                            }
+                        </li>
+                        <li>
+                            Màu sắc: @foreach (var item in (List<NhocGiftShop.Models.EntitiesModel.ProductFormat>)TempData["color"])
+                            {
+                                <span>- @(item.colorName ?? "Chưa cập nhật")</span>
+                            }
+
+
+                        </li>
+                        <li>Chất liệu: @(pro.material ?? "Chưa cập nhật")</li>
+                        <li>Mô tả: @Html.Raw(pro.description ?? "Chưa cập nhật")</li>
+
+                    </ul>
+                </div>
+            </div>
+            <div id="bannerPro">
+                <img src="@Url.Content("~/Content/Client/")image/banner-view-right.jpg" alt="" style="width: 100%;">
+            </div>
+        </div>
+    </div>
+}
+

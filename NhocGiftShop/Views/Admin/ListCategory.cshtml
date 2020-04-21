@@ -1,0 +1,78 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<form action="" method="POST">
+    <div class="table-agile-info">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Category List &nbsp; <a class="agile-icon" href="@Url.Action("Category")"><i class="fa fa-plus-circle"></i></a>
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped b-t b-light">
+                    <thead>
+                        <tr>
+                            <th>Category Name</th>
+                            <th>Special</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody style="word-break: break-all;">
+                        @foreach (var item in NhocGiftShop.Models.Repositories.GetAllCate())
+                        {
+                            <tr>
+                                <td>@item.nameCate</td>
+                                <td><input type="checkbox" name="specialCate" style="width:15px;height:15px;" @(item.specialCate == true ? "checked" : "") disabled /></td>
+                                <td>
+                                    <a href="@Url.Action("EditCategory",new { idCate =item.idCate})" class="active" ui-toggle-class="">
+                                        <i class="fa fa-edit text-success text-active"></i>&nbsp; &nbsp;
+                                    </a>
+                                    <a href="@Url.Action("DelCate",new { idCate =item.idCate})" class="active" ui-toggle-class="">
+                                        <i class="fa fa-trash text-danger text"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+@if (TempData["rs"] != null)
+{
+    <script>
+        $(function () {
+            $("#msgModal").modal("show");
+        });
+    </script>
+    <div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="margin:auto;width:60%;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="msgModalLabel" style="width:50%; font-size:20px">Notification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -29px;font-size: 30px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color: coral;font-size:18px;">
+                    @if (((int)TempData["rs"]) == 1)
+                    {
+                        <label>Delete successful!</label>
+                    }
+                    @if (((int)TempData["rs"]) == 0)
+                    {
+                        <label>Delete failed! This category contains many other subcategories.</label>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+

@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Nhóc Giftshop | Gấu Bông - Phụ Kiện - Quà Tặng</title>
+    <script src="https://kit.fontawesome.com/d93a4b936d.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="@Url.Content("~/Content/Client/")css/style.css">
+</head>
+
+<body>
+    <div id="master">
+        <!--header-->
+        <header>
+            <div id="headerTop">
+                <div id="bgTop">
+                    <div class="container row" style="margin-left: 24%;">
+                        <div class="menuTop">
+                            <span class="bIcon">1</span>
+                            <span class="contentTop">Chọn sản phẩm</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <div class="menuTop">
+                            <span class="bIcon">2</span>
+                            <span class="contentTop">Nhấn mua hàng</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <div class="menuTop">
+                            <span class="bIcon">3</span>
+                            <span class="contentTop">Bấm thanh toán</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <div class="menuTop">
+                            <span class="rIcon"></span>
+                            <span class="contentTop">Nhóc giao hàng ngay</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="bgRoundTop"></div>
+            </div>
+            <div id="headerMiddle" style="position: relative;">
+                <div class="container row">
+                    <div id="logoHead">
+                        <a href="@Url.Action("Index")" id="logo">
+                            <img src="@Url.Content("~/Content/Client/")image/nhoc-logo.png" alt=""
+                                 style="width: 100px;height: 100px;margin-top: 5px;">
+                        </a>
+                    </div>
+                    <div id="infoHead">
+                        <p>Trụ sở: 107 Nguyễn Trãi, P.2, Q.5, TP.HCM</p>
+                        <p>Hotline: 0286 686 0947 – 0966967947</p>
+                        <p>Email: care@nhocgiftshop.com</p>
+                    </div>
+                    <div id="user">
+                        <div id="userTop">
+                            @if (Session["MemberID"] != null)
+                            {
+                                <a href="@Url.Action("LayoutInfoPerson")" style="border-right: solid 3px black;text-decoration: underline;">
+                                    @Session["MemberName"]
+                                </a>
+                                <a href="@Url.Action("LogoutMem")" style="text-decoration: underline;margin-left: 10px;">
+                                    Thoát
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("LayoutSignUp")">
+                                    <span class="signupIcon"></span>
+                                </a>
+                                <a href="@Url.Action("LayoutSignIn")">
+                                    <span class="signinIcon"></span>
+                                </a>
+                            }
+                        </div>
+                        <div id="userBottom" class="row">
+                            <a href="">
+                                <img src="@Url.Content("~/Content/Client/")image/icon-search.png" alt="">
+                                <span class="contentUsrBottom">Tìm kiếm</span>
+                            </a>
+
+                            <a href="@Url.Action("LayoutCart")">
+                                <span class="count-cart">
+                                    <i id="numberCart">@(Session["count"] ?? 0)</i>
+                                </span>
+                                <span class="contentUsrBottom">Giỏ hàng</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="headerBottom">
+                <div id="bgRoundBottom"></div>
+                <div id="bgBottom">
+                    <div id="menuBar" class="container row">
+                        <ul class="nav colorPink">
+                            <li>
+                                <a href="@Url.Action("Index")"><i style="font-size: 16px;padding: 0 5px 0 5px" class="fas fa-home"></i></a>
+                            </li>
+                            @foreach (var item in NhocGiftShop.Models.Repositories.GetCateHot())
+                            {
+                                <li class="dropdown-menu">
+                                    <a id="dLabel" class="color88226" href="#">
+                                        <span>@item.nameCate</span>
+                                        <i><img src="@Url.Content("~/Content/Client/")image/icon_88226_1480414981_icon_hot_store.gif"></i>
+                                    </a>
+                                    <ul>
+                                        @foreach (var subItem in NhocGiftShop.Models.Repositories.GetSubCateByIDCate(item.idCate))
+                                        {
+                                            <li>
+                                                <i class="fas fa-heart colorPink heartIcon"></i>
+                                                <a href="@Url.Action("LayoutProduct",new { idSC=subItem.idSC})">@subItem.nameSC</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                            @foreach (var item in NhocGiftShop.Models.Repositories.GetCateNormal())
+                            {
+                                <li class="dropdown-menu colorPink">
+                                    <a class="" href="#">
+                                        <span>@item.nameCate</span>
+                                    </a>
+                                    <ul>
+                                        @foreach (var subItem in NhocGiftShop.Models.Repositories.GetSubCateByIDCate(item.idCate))
+                                        {
+                                            <li>
+                                                <i class="fas fa-heart heartIcon"></i>
+                                                <a href="@Url.Action("LayoutProduct",new { idSC=subItem.idSC})">@subItem.nameSC</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div>
+            <img src="@Url.Content("~/Content/Client/")image/border.png" alt="" style="width: 100%;margin-top: -8px;">
+        </div>
+        <!--header-->
+        <!--content-->
+        <section class="container">
+            @RenderBody()
+
+            <div id="btTop" class="btTopFixed" onclick="topFunction()"></div>
+            <div id="adFixedLeft">
+                <a href="">
+                    <img src="@Url.Content("~/Content/Client/")image/sb_1474460884_4.png" alt="" style="max-width: 100%;">
+                </a>
+            </div>
+            <div id="adFixedRight">
+                <a href="">
+                    <img src="@Url.Content("~/Content/Client/")image/banner_right.png" alt="" style="max-width: 100%;">
+                </a>
+            </div>
+        </section>
+        <!--content-->
+        <!--footer-->
+        <footer id="footer">
+            <div id="bgRoundFooter">
+                <div class="container row">
+                    <div id="store">
+                        <h3>Hệ thống cửa hàng</h3>
+                        <ul>
+                            <li>* 107 Nguyễn Trãi, P2, Q.5 - 02866860947</li>
+                            <li>* 219 Võ Văn Ngân, Thủ Đức - 02862837856</li>
+                            <li>* 36 Đoàn Kết, Thủ Đức - 02866592753</li>
+                            <li>* 288 Đường 30-4, TP. Biên Hoà - 02516535290</li>
+                            <li>* 159 Ba Cu, TP. Vũng Tàu - 02546550947</li>
+                            <li>* 94 Thủ Khoa Huân, TP. Phan Thiết - 02526502059</li>
+                            <li>* 130 Nguyễn Việt Hồng, TP. Cần Thơ - 02926539541</li>
+                        </ul>
+                    </div>
+                    <div id="support" style="margin-left: 50px;">
+                        <h3>Hỗ trợ khách hàng</h3>
+                        <ul>
+                            <li><a href="">Hướng dẫn mua hàng</a></li>
+                            <li><a href="">Chính sách vận chuyển</a></li>
+                            <li><a href="">Hình thức thanh toán</a></li>
+                            <li><a href="">Khuyến mãi</a></li>
+                            <li><a href="">Tin tức</a></li>
+                            <li>Email:&nbsp;<a href="">care@nhocgiftshop.com</a></li>
+                        </ul>
+                    </div>
+                    <div id="inforBottom" style="margin-left: 50px;">
+                        <h3>Thông tin</h3>
+                        <ul>
+                            <li>* <a href="">Giới thiệu</a></li>
+                            <li>* <a href="">Tuyển dụng</a></li>
+                            <li>* <a href="">Video</a></li>
+                        </ul>
+                        <ul id="social" class="row" style="margin-top: 10px;">
+                            <li>
+                                <a target="_blank" title="Facebook" href="https://www.facebook.com/nhocgiftshop">
+                                    <img src="@Url.Content("~/Content/Client/")image/facebook.png">
+                                </a>
+                            </li>
+                            <li>
+                                <a target="_blank" title="Youtube" href="#">
+                                    <img src="@Url.Content("~/Content/Client/")image/youtube.png">
+                                </a>
+                            </li>
+                            <li>
+                                <a target="_blank" title="Zalo" href=""><img src=".@Url.Content("~/Content/Client/")image/zalo.png"></a>
+                            </li>
+                            <li>
+                                <a target="_blank" title="Instagram" href="">
+                                    <img src="@Url.Content("~/Content/Client/")image/instagram.png">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="bgFooter"></div>
+        </footer>
+        <!--header-->
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script src="@Url.Content("~/Content/Client/")js/script.js"></script>
+
+
+</body>
+</html>

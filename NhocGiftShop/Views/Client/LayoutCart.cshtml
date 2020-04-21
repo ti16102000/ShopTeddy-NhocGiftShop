@@ -1,0 +1,82 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+<div style="min-height: 500px;">
+    <p style="text-transform: uppercase;padding: 25px;font-size: 30px;text-align: center;">
+        Giỏ hàng của bạn
+    </p>
+    <div>
+        <img src="@Url.Content("~/Content/Client/")image/border.png" alt="" style="width: 100%;margin-top: -8px;">
+    </div>
+    <div>
+        <form action="@Url.Action("CreateOrd")" id="frmCart" method="post">
+            <div id="infoDelivery">
+                <span style="text-transform: uppercase;color: #164A50;font-size: 25px;">
+                    Thông
+                    tin giao hàng
+                </span>
+                <div class="row" style="margin-bottom: 15px;margin-top: 10px;">
+                    <label for=""><span><b style="color: red;">* </b>Họ và tên</span></label>
+                    <input type="text" name="nameIP" value="@(Session["MemberName"]??null)" placeholder="Họ và tên" id="nameDeli" required>
+                </div>
+                <div class="row">
+                    <label for=""><span><b style="color: red;">* </b>Điện thoại</span></label>
+                    <input type="text" name="phone" value="@(Session["MemberPhone"]??null)" placeholder="Điện thoại" id="phoneDeli" required>
+                </div>
+            </div>
+            <div id="order">
+                <div id="infoOrd">
+                    <div style=" border-bottom: 2px dotted pink;margin-bottom: 10px">
+                        <span style="text-transform: uppercase;color: #164A50;font-size: 20px">
+                            Đơn hàng
+                        </span><span>(@(Session["count"]??0) Sản Phẩm)</span>
+                    </div>
+                    <div id="product_cart">
+                        <fieldset>
+                            @if (Session["cart"] == null)
+                            {
+                                <p>Chưa có sản phẩm nào</p>
+                            }
+                            else
+                            {
+                                foreach (var item in (List<NhocGiftShop.Models.ViewModel.CartView>)Session["cart"])
+                                {
+                                    <div id="proOrd" style="width:80%;float: right;">
+                                        <a href="@Url.Action("RemovePro",new { idPF=item.idPF})" title="Xóa" style="margin-right: 5px;cursor: pointer;"><i class="fa fa-times"></i></a>
+                                        <a style="color: #ED2E71;font-weight: bold;font-size: 14px;">@item.namePro - @(item.colorName??null) @(item.size??null) (x @item.quantity)</a>
+                                    </div>
+                                    <div id="priceOrd" style="width:20%;">
+                                        <span style="font-size: 15px;">@item.amount đ</span>
+                                    </div>
+                                }
+
+                            }
+
+                        </fieldset>
+                    </div>
+                    <div style=" border-bottom: 2px dotted pink;">
+                        <fieldset>
+                            <div class="row">
+                                <label for="name" style="width: 150px;">Thành tiền</label>
+                                <div>
+                                    <b>@(Session["total"] ?? 0) VNĐ</b>
+                                    <p>(Chưa tính phí vận chuyển)</p>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                </div>
+                <div id="btnOrd">
+                    <input type="submit" id="btnSubmit" value="Đặt hàng">
+                </div>
+            </div>
+        </form>
+        <button id="buy-more">
+            <a href="@Url.Action("Index")"></a>
+            Mua thêm
+        </button>
+    </div>
+</div>
+
